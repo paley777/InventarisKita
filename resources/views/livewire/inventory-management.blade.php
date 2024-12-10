@@ -65,7 +65,11 @@
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase">No</th>
-                                        <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase">Ruangan</th>
+                                        <!-- Kolom Ruangan hanya muncul jika Semua Ruangan dipilih atau tidak ada ruangan yang dipilih -->
+                                        @if (is_null($roomFilter))
+                                            <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase">Ruangan
+                                            </th>
+                                        @endif
                                         <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase">Nama
                                             Inventaris</th>
                                         <th class="px-6 py-3 text-sm font-medium text-gray-700 uppercase">Tipe</th>
@@ -88,28 +92,22 @@
                                             <td class="px-6 py-4 text-sm text-gray-800">
                                                 {{ $inventories->firstItem() + $index }}
                                             </td>
-                                            <td class="px-6 py-4 text-sm text-gray-800">
-                                                <x-badge icon-size="sm" lg icon="folder-open" primary
-                                                    label="{{ $inventory->room->name ?? 'N/A' }}" />
+                                            <!-- Kolom Ruangan hanya tampil jika Semua Ruangan dipilih atau tidak ada filter -->
+                                            @if (is_null($roomFilter))
+                                                <td class="px-6 py-4 text-sm text-gray-800">
+                                                    <x-badge icon-size="sm" lg icon="folder-open" primary
+                                                        label="{{ $inventory->room->name ?? 'N/A' }}" />
+                                                </td>
+                                            @endif
+                                            <td class="px-6 py-4 text-sm text-gray-800">{{ $inventory->name }}</td>
+                                            <td class="px-6 py-4 text-sm text-gray-800">{{ $inventory->type }}</td>
+                                            <td class="px-6 py-4 text-sm text-gray-800">{{ $inventory->ownership }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-800">{{ $inventory->specification }}
                                             </td>
                                             <td class="px-6 py-4 text-sm text-gray-800">
-                                                {{ $inventory->name }}
-                                            </td>
-                                            <td class="px-6 py-4 text-sm text-gray-800">
-                                                {{ $inventory->type }}
-                                            </td>
-                                            <td class="px-6 py-4 text-sm text-gray-800">
-                                                {{ $inventory->ownership }}
-                                            </td>
-                                            <td class="px-6 py-4 text-sm text-gray-800">
-                                                {{ $inventory->specification }}
-                                            </td>
-                                            <td class="px-6 py-4 text-sm text-gray-800">
-                                                {{ $inventory->acquisition_year }}
-                                            </td>
-                                            <td class="px-6 py-4 text-sm text-gray-800">
-                                                {{ $inventory->quantity }}
-                                            </td>
+                                                {{ $inventory->acquisition_year }}</td>
+                                            <td class="px-6 py-4 text-sm text-gray-800">{{ $inventory->quantity }}</td>
                                             <td class="px-6 py-4 text-sm text-gray-800">
                                                 <x-badge flat positive label="{{ $inventory->layak_count }}" />
                                             </td>
@@ -119,11 +117,9 @@
                                             <td class="px-6 py-4 text-sm font-medium">
                                                 <div class="flex space-x-2">
                                                     <x-button wire:click="editInventory({{ $inventory->id }})"
-                                                        label="Edit" rounded icon="pencil-square" flat primary
-                                                        interaction="solid" />
+                                                        label="Edit" rounded icon="pencil-square" flat primary />
                                                     <x-button wire:click="confirmDelete({{ $inventory->id }})"
-                                                        label="Hapus" rounded icon="trash" flat gray
-                                                        interaction="negative" />
+                                                        label="Hapus" rounded icon="trash" flat gray />
                                                 </div>
                                             </td>
                                         </tr>
@@ -131,7 +127,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                         <!-- Pagination -->
                         <div class="mt-6">
                             {{ $inventories->links() }}
