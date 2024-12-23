@@ -17,7 +17,7 @@ class Dashboard extends Component
     public function mount()
     {
         // Ambil total inventaris
-        $this->totalInventaris = Inventory::count();
+        $this->totalInventaris = Inventory::sum('layak_count') + Inventory::sum('tidak_layak_count');
 
         // Ambil total inventaris layak
         $this->totalLayak = Inventory::where('layak_count', '>', 0)->sum('layak_count');
